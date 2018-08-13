@@ -3,13 +3,15 @@ package com.agriniuk.imgaccorp.works;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
 /**
  * Internal wrapper around {@link Work}.<br/>
  * 
- * @author Alexandre_Griniuk
- *
+ * It's not very useful right now, but it can put to use.
+ * For example, we can have a date-time stamp of the {@link Work}), 
+ * a runtime measured, work id, etc. 
  */
-public class WorkWrapper<T extends Work> {
+class WorkWrapper<T extends Work> {
 	
 	
 	private static final Logger log = LoggerFactory.getLogger(WorkWrapper.class);

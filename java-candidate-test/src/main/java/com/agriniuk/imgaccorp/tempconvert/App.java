@@ -7,8 +7,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Random;
 
-import com.agriniuk.imgaccorp.works.Work;
-import com.agriniuk.imgaccorp.works.WorkWrapper;
 import com.agriniuk.imgaccorp.works.Worker;
 
 
@@ -21,29 +19,45 @@ public class App {
 	public static void main(String[] args) throws Exception {
 		
 		
-		
 		Worker<TempConvertWork> w = new TempConvertWorker();
 		
+		log.debug("------------ adding 10 work items ------------");
 		w.addAll(generateRandomWorks(10));
 		
+		log.debug("------------ starting Worker ------------");
 		w.start();
 		
+		log.debug("------------ sleeping 10s  ------------");
 		Thread.sleep(10000);
 		
+		log.debug("------------ adding 10 work items  ------------");
+		w.addAll(generateRandomWorks(10));
+		
+		log.debug("------------ sleeping 3 s  ------------");
+		Thread.sleep(3000);
+		
+		log.debug("------------ stopping  ------------");
 		w.stop();
 		
-		Thread.sleep(10000);
-		
-		w.start();
-		
+		log.debug("------------ sleepign 1s  ------------");
 		Thread.sleep(1000);
 		
+		log.debug("------------ starting Worker  ------------");
+		w.start();
+		
+		log.debug("------------ sleepign 1s  ------------");
+		Thread.sleep(1000);
+		
+		log.debug("------------ adding 10 work items  ------------");
 		w.addAll(generateRandomWorks(10));
 		
-		Thread.sleep(10000);
+		log.debug("------------ sleepign 5s  ------------");
+		Thread.sleep(5000);
 		
+		log.debug("------------ stopping  ------------");
 		w.stop();
 		
+		log.debug("------------ done  ------------");
 	}
 	
 	

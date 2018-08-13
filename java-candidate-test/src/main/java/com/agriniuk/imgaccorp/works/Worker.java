@@ -7,9 +7,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
+//TODO: comment
 public class Worker<T extends Work> {
 	
-	private static final Logger log = LoggerFactory.getLogger(Worker.class);
+	private final Logger log = LoggerFactory.getLogger(this.getClass());
 	
 	private final LinkedList<WorkWrapper<T>> queue = new LinkedList<>();
 	
@@ -37,12 +38,19 @@ public class Worker<T extends Work> {
 	
 	
 	public synchronized void addAll(Iterable<T> seq) {
-		for (T work : seq)
+		int a = 0;
+		for (T work : seq) {
 			add(work);
+			a++;
+		}
+		//yes yes.. the size printed here may already be off
+		log.debug("added more work {} items (queue size roughly should be {})", a, queue.size());
 	}
 	
 	
 	public synchronized void add(T work) {
+		log.trace("adding more work");
+		int a = -1;
 		switch(getState()) {
 			case INITIAL:
 			case OPERATIONAL:
@@ -50,31 +58,36 @@ public class Worker<T extends Work> {
 					if (queue.size()>=queueMaxSize)
 						throw new IllegalStateException("Queue is full.");
 					queue.addLast(new WorkWrapper<T>(work));
+					a = queue.size();
 					queue.notifyAll();
 				}
 				break;
 			case STOPPED:
 				throw new IllegalStateException("You can not add more Work while in STOPPED state");
 		}
+		log.debug("added more work (queue size is {})", a);
 	}
 	
 	
-	//TODO: comment
 	public synchronized void start() {
 		if (getState() == WorkerState.OPERATIONAL)
 			throw new IllegalStateException("State is already 'OPERATIONAL'");
 		
+		log.trace("creating workign threads");
 		for (int i=0; i<threadsMaxAmount; i++) {
 			WorkThread<T> thread = new WorkThread<T>("WorkThread_"+i, queue);
 			thread.setDaemon(isDaemon);
 			threads.add(thread);
 		}
 		
+		int a = queue.size();
+		
+		log.trace("starting working threads");
 		for (WorkThread<T> thread : threads)
 			thread.start();
 		
 		state = WorkerState.OPERATIONAL;
-		log.debug("started {}", this.getClass().getSimpleName());
+		log.debug("started with {} threads (queue size was {})", threads.size(), a);
 	}
 	
 	
@@ -101,21 +114,25 @@ public class Worker<T extends Work> {
 		if (getState() != WorkerState.OPERATIONAL)
 			throw new IllegalStateException("State must be OPERATIONAL to call this method");
 		
+		log.trace("stopping working threads");
 		for (WorkThread<T> thread : threads) {
 			thread.toStop = true;
 			thread.interrupt();
 		}
 		
+		log.trace("waiting for working threads to finish");
 		try {
 			for (WorkThread<T> thread : threads)
 				thread.join();
 		} catch (InterruptedException e) {
-			//TODO: log
+			log.error("interrupted while waiting for working threads to finish", e);
 		}
 		
+		int a = threads.size();
+		int b = queue.size();
 		threads.clear();
 		state = WorkerState.STOPPED;
-		log.debug("stopped {}", this.getClass().getSimpleName());
+		log.debug("stopped {} working threads (queue size is {})", a, b);
 	}
 	
 	

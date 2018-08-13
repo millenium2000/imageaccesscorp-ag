@@ -23,18 +23,19 @@ public class TempConvertWork extends Work {
 	
 	@Override
 	public void start() {
-		log.debug("converting {} => {}", value, tempNameFull(toCelsius));
-		double res = TempService.convert(value, toCelsius);
-		log.info("{} {}` = {} {}`", value, tempNameShort(!toCelsius), res, tempNameShort(toCelsius));
+		//I could just leave the RuntimeException to flow up and get cought by WorkWrapper
+		// but I know that w3schools API fails a lot of times, so for illustration purpose
+		// I don't want to pollute logs with these
+		try {
+			double res = TempService.convert(value, toCelsius);
+			log.info("{} {}` => {} {}`", value, b2s(!toCelsius), res, b2s(toCelsius));
+		} catch (Exception e) {
+			log.info("{} {}` => ERROR({})", value, b2s(!toCelsius), e.toString());			
+		}
 	}
 	
 	
-	private static String tempNameFull(boolean isCelsius) {
-		return isCelsius ? "Celsius" : "Farenheith";
-	}
-	
-	
-	private static String tempNameShort(boolean isCelsius) {
+	private static String b2s(boolean isCelsius) {
 		return isCelsius ? "C" : "F";
 	}
 
