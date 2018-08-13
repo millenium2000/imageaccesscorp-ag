@@ -3,8 +3,13 @@ package com.agriniuk.imgaccorp.works;
 import java.util.HashSet;
 import java.util.LinkedList;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 public class Worker<T extends Work> {
+	
+	private static final Logger log = LoggerFactory.getLogger(Worker.class);
 	
 	private final LinkedList<WorkWrapper<T>> queue = new LinkedList<>();
 	
@@ -28,6 +33,12 @@ public class Worker<T extends Work> {
 	
 	public Worker() {
 		this(30, 3, false);
+	}
+	
+	
+	public synchronized void addAll(Iterable<T> seq) {
+		for (T work : seq)
+			add(work);
 	}
 	
 	
@@ -63,6 +74,7 @@ public class Worker<T extends Work> {
 			thread.start();
 		
 		state = WorkerState.OPERATIONAL;
+		log.debug("started {}", this.getClass().getSimpleName());
 	}
 	
 	
@@ -85,7 +97,7 @@ public class Worker<T extends Work> {
 	 * @param waitForComplete weather to "wait for currently executing 
 	 * 		jobs to finish and then return" or "return right away"
 	 */
-	public synchronized void stop(boolean waitForComplete) {
+	public synchronized void stop() {
 		if (getState() != WorkerState.OPERATIONAL)
 			throw new IllegalStateException("State must be OPERATIONAL to call this method");
 		
@@ -101,7 +113,9 @@ public class Worker<T extends Work> {
 			//TODO: log
 		}
 		
-		
+		threads.clear();
+		state = WorkerState.STOPPED;
+		log.debug("stopped {}", this.getClass().getSimpleName());
 	}
 	
 	
