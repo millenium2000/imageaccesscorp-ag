@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Random;
-
+import com.agriniuk.imgaccorp.works.Work;
 import com.agriniuk.imgaccorp.works.Worker;
 
 
@@ -22,7 +22,7 @@ public class App {
 		Worker<TempConvertWork> w = new TempConvertWorker();
 		
 		log.debug("------------ adding 10 work items ------------");
-		w.addAll(generateRandomWorks(10));
+		addAll(w, generateRandomWorks(10));
 		
 		log.debug("------------ starting Worker ------------");
 		w.start();
@@ -31,7 +31,7 @@ public class App {
 		Thread.sleep(10000);
 		
 		log.debug("------------ adding 10 work items  ------------");
-		w.addAll(generateRandomWorks(10));
+		addAll(w, generateRandomWorks(10));
 		
 		log.debug("------------ sleeping 3 s  ------------");
 		Thread.sleep(3000);
@@ -49,7 +49,7 @@ public class App {
 		Thread.sleep(1000);
 		
 		log.debug("------------ adding 10 work items  ------------");
-		w.addAll(generateRandomWorks(10));
+		addAll(w, generateRandomWorks(10));
 		
 		log.debug("------------ sleepign 5s  ------------");
 		Thread.sleep(5000);
@@ -72,6 +72,13 @@ public class App {
 		return res;
 	}
 	
+	
+	public static <T extends Work> void addAll(Worker<T> worker, Iterable<T> seq) {
+		for (T work : seq) {
+			worker.add(work);
+		}
+	}
+
 	
 	
 }
