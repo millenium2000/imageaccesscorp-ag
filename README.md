@@ -33,3 +33,9 @@ To execute demo code:
 java -cp target/imgaccorp-works-fat.jar com.agriniuk.imgaccorp.tempconvert.DemoApp
 ```
 
+To generate javadoc (will be put into _target/site/apidocs/_):
+```
+mvn javadoc:javadoc
+```
+
+
