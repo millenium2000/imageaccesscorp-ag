@@ -1,0 +1,33 @@
+From: Alexandre Griniuk
+To: Costas Stergiou
+
+so, as far as I understand (and correct me if I'm wrong), the use case
+you want to implement is:
+1) Worker, once instantiated, does not do anything (no threads
+created), and is in "INITIALIZED" state
+3) the user (hosting app) can call worker.add( someJob ) in order to
+add the job into the queue. Worker does not do anything at that point.
+2) the user (hosting app) MUST call worker.start() in order to start
+jobs execution. The  worker gets into OPERATIONAL state at this point
+and starts executing jobs (and creates as many threads as it needs..
+and maybe uses threads pooling)
+3) during this period, the user can call worker.add( someJob) to add more jobs
+4) as some point, the user can call worker.stop(). After that, the
+worker WILL NOT accept any new job, but continue executing the current
+ones, and whatever is in the queue. Once all the Jobs from that queue
+are done, the Worker terminates all its internal threads.
+5) at this point, the caller can call worker.start() again, to move
+the worker back into OPERATIONAL state, in order to submit some more
+Jobs.
+6) all the internal threads threads can be started as either 'daemon',
+or a regular threads.
+this will affect what happens if a main hosting app threads all terminate.
+
+
+If my understanding of the assignment is correct, one more thing I
+still don't understand: why do you need to have "SomeWorkWorker" to be
+a parameterized generic? You can easily achieve compile-time
+validation, since during the declaration of the class you'll know what
+Job sub-class it will require/work with.
+
+--Alexandre

@@ -10,10 +10,10 @@ import com.agriniuk.imgaccorp.works.Work;
 import com.agriniuk.imgaccorp.works.Worker;
 
 
-public class App {
+public class DemoApp {
 	
 	
-	private static final Logger log = LoggerFactory.getLogger(App.class);
+	private static final Logger log = LoggerFactory.getLogger(DemoApp.class);
 	
 	
 	public static void main(String[] args) throws Exception {

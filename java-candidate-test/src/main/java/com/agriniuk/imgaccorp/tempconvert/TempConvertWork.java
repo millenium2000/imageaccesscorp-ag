@@ -30,7 +30,7 @@ public class TempConvertWork extends Work {
 			double res = TempService.convert(value, toCelsius);
 			log.info("{} {}` => {} {}`", value, b2s(!toCelsius), res, b2s(toCelsius));
 		} catch (Exception e) {
-			log.info("{} {}` => ERROR({})", value, b2s(!toCelsius), e.toString());			
+			log.error("{} {}` => {}", value, b2s(!toCelsius), e.toString());			
 		}
 	}
 	

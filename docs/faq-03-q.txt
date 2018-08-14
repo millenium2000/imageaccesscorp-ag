@@ -1,0 +1,18 @@
+From: Alexandre Griniuk
+To: Costas Stergiou
+
+In the previous email in the PDF I've showed:
+
+class WW2 extends W<J2> {
+  public void add(J2 t) {}
+}
+
+
+then you can do
+   W<J2> ww2 = new WW2();
+vs.
+  W<J2> w2 = new W2<J2>();
+
+IMHO, this makes a better API, since you don't give a user a wrong
+assumption that you can put ANY Work class during the instantiation of
+the Worker.

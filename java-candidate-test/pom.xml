@@ -34,7 +34,35 @@
 
 
 	<build>
+		<finalName>imgaccorp-works</finalName>
 		<plugins>
+		
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<!-- mainClass>fully.qualified.MainClass</mainClass -->
+						</manifest>
+					</archive>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+					<finalName>imgaccorp-works-fat</finalName>
+					<appendAssemblyId>false</appendAssemblyId>
+					<attach>false</attach>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id> <!-- this is used for inheritance merges -->
+						<phase>package</phase> <!-- bind to the packaging phase -->
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -44,6 +72,7 @@
 					<target>1.8</target>
 				</configuration>
 			</plugin>
+			
 		</plugins>
 	</build>
 </project>

@@ -1,0 +1,44 @@
+From: Costas Stergiou
+To: Alexandre Griniuk
+
+Hi Alexander,
+Here are the clarifications:
+
+AG1: An application may create several type of workers, but each worker will only work for a specific Work (job). So, a Worker instance may be used to do network-bound operations and another Worker instance may be used to perform cpu-bound operations.
+
+AG2: it's up to you. The Work could be a tag interface, an abstract class or whatever you want. The idea is that the Worker instance is 'bound' to a specific type of Work.
+
+AG3: Perhaps a better word instead of 'Worker' could be 'Processing Engine'. Each 'Worker' is a processing engine that processes/run/executes specific types of 'Work'.
+
+AG4: Submitting a Work would be one things or just during a supposed initialization phase where a worker needs to 'warm up'.
+
+ AG5: A Worker may be accepting Works and queue them. When another theads moves it to STOPPED it should actually stop accepting anything else. Or an interim situation (e.g. temporary pause)
+
+AG6: 'External' in the sense that the Worker is by definition a class to be invoked asynchronously
+
+AG7: A compile time error (using Generics)
+
+AG8: not a state: NOT EXISTS is actually where there is no worker.
+
+AG9: yes it can; as if someone temporarily pauses the Worker
+
+AG10: up to you: decide if you want the Worker to use daemon threads or not (or set this up as a parameter, even better)
+
+AG11: I would assume a submission of a Work
+
+AG12. AG13: This is the app's thread that calls a 'stop()' method. The idea is that all submitted jobs are done before returning.
+
+AG14: it's not the Worker that decides that, it's someone else calling the method 'stop()' or 'shutdown()' for example
+
+AG15: Yes
+
+AG16: Yes
+
+AG17, AG18: The Worker. The Work is like a Runnable
+
+AG19: There is no reason for a hierarchy (implementation decision). The idea (as I said before) is that an instance of a Worker can only run Works (e.g. subclasses) of a specific type.
+
+Not sure if I answered all your questions. Feel free to bounce back what is not clear,
+
+Thanks
+Costas
