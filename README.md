@@ -25,7 +25,7 @@ cd java-candidate-test
 
 To build:
 ```
-mvn package
+mvn clean package
 ```
 
 To execute demo code:
