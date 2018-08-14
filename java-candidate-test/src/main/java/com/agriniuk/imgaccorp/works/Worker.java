@@ -15,25 +15,33 @@ import org.slf4j.LoggerFactory;
  * 
  * The general usage pattern:
  * <pre>
- *  1) create a sub-class of {@link Work} and implement {@link Work#start()}:
- *  {@code public class SomeWork extends Work {
- *  	public void start() { /* do something * / }
- *  }}
- *  2) optionally crate a sub-class of the Worker:
- *  {@code public class SomeWorker extends Worker<SomeWork> {
- *  // you don't really need to implement any methods.
- *  }
+ * 
+ *  1) create a sub-class of {@link Work} and implement {@link Work#start()}:<code>
+ *  	public class SomeWork extends Work {
+ *  		public void start() { /* do something * / }
+ *  	}</code>
+ *  
+ *  2) optionally crate a sub-class of the Worker:<code>
+ *  	public class SomeWorker extends Worker<SomeWork> {
+ *  	// you don't really need to implement any methods.
+ *  	}</code>
+ *  
  *  3) in your main application you can do:
  *  {@code Worker<SomeWork> worker = new SomeWorker(); }
  *  or
  *  {@code Worker<SomeWork> worker = new Worker<>(); }
  *  if you don't need to override any SomeWorker functionality
+ *  
  *  4) add some work:
  *  {@code worker.add(new SomeWork());}
+ *  
  *  5) start worker:
  *  {@code worker.start();}
+ *  
  *  6) you may add some more work
+ *  
  *  7) to terminate, call {@code worker.stop()}
+ *  
  *  8) after that you can call {@code worker.start()} again.
  * </pre>
  * 

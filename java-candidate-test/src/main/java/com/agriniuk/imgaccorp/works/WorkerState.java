@@ -9,7 +9,7 @@ public enum WorkerState {
 	
 	/** 
 	 * First initial state. 
-	 * A {@link Worker} can only accept new {@Work}s 
+	 * A {@link Worker} can only accept new {@link Work}s 
 	 * but execution will start only after calling {@link Worker#start()}
 	 */
 	INITIAL,
@@ -17,7 +17,7 @@ public enum WorkerState {
 	
 	/**
 	 * In this state a {@link Worker} has active threads
-	 * which process current {@list Work} queue.
+	 * which process current {@link Work} queue.
 	 */
 	OPERATIONAL,
 	
