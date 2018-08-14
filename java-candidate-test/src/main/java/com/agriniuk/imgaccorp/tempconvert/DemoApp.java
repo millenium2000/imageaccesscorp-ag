@@ -19,7 +19,7 @@ public class DemoApp {
 	public static void main(String[] args) throws Exception {
 		
 		
-		Worker<TempConvertWork> w = new TempConvertWorker();
+		Worker<TempConvertWork> w = new TempConvertWorker(30, 3, true);
 		
 		log.debug("------------ adding 10 work items ------------");
 		addAll(w, generateRandomWorks(10));
@@ -54,9 +54,15 @@ public class DemoApp {
 		log.debug("------------ sleepign 5s  ------------");
 		Thread.sleep(5000);
 		
-		log.debug("------------ stopping  ------------");
-		w.stop();
+		log.debug("------------ saturating queue  ------------");
+		try {
+			addAll(w, generateRandomWorks(100));
+		} catch (Exception e) {
+			log.debug("error cought : {}", e.toString());
+		}
 		
+		log.debug("------------ exiting  ------------");
+		log.debug("application should terminate, since threads were started as daemons");
 		log.debug("------------ done  ------------");
 	}
 	
